@@ -12,6 +12,7 @@ This project implements a complete ETL and machine learning pipeline that:
 - Trains an optimized `XGBoost` regression model using a `scikit-learn` 
 - Deploys a web application using `Streamlit` for real-time prediction of average Medicare payments
 
+**Live Demo**: [Streamlit App Link](https://kensuke0529-cms-appmain-hm3nti.streamlit.app/)
 
 ![Model Architecture](images/Blank_diagram.png)
 
