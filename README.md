@@ -1,6 +1,4 @@
-# CMS Project
-
-## Automated End-to-End Pipeline for Medicare Payment Prediction
+## CMS (Centers for Medicare & Medicaid Services) Medicare Payment Prediction
 
 ### Overview
 
@@ -12,7 +10,7 @@ This project implements a complete ETL and machine learning pipeline that:
 - Trains an optimized `XGBoost` regression model using a `scikit-learn` 
 - Deploys a web application using `Streamlit` for real-time prediction of average Medicare payments
 
-**Live Demo**: [Streamlit App Link](https://kensuke0529-cms-appmain-hm3nti.streamlit.app/)
+**Live Demo**: [Streamlit App Link](http://192.168.0.2:8501)
 
 ![Model Architecture](images/Blank_diagram.png)
 
@@ -31,9 +29,8 @@ This project implements a complete ETL and machine learning pipeline that:
 
 ---
 
-#### 2. Machine Learning
+#### 2. Machine Learning: ([ML pipeline](#machine-learning-pipeline)): `ML/ML.ipynb`, `rf_lr.ipynb`
 
-- **Environment**: `ML/ML.ipynb`
 - **Pipeline Structure**:
   - `ColumnTransformer`:
     - `OneHotEncoder` for categorical features
@@ -44,10 +41,23 @@ This project implements a complete ETL and machine learning pipeline that:
     - Root Mean Squared Error (RMSE)
     - R² Score
 - **Model Persistence**: Serialized using `joblib.dump()` → `xgb_pipeline.joblib`
+- In `rf_lr.ipynb`, implement LinearRegession and RandomForestRegression.
 
+-----
+#### 3.SQL: Data Loading & Schema Design (DDL)
+The Medicare dataset was loaded using Python (sqlalchemy) into a structured relational schema.
+
+Tables created:
+- **payments**: core fact table linking provider performance to specific DRG codes
+- **providers**: normalized hospital/provider metadata
+- **drgs**: DRG codes and descriptions, partitioned by year
+
+This process began with `DDL` (Data Definition Language) design to normalize the schema into 3 entities with minimal redundancy, using appropriate primary and foreign keys to enforce referential integrity.
+
+![Model Architecture](images/Blank_diagram_(3).png)
 ---
 
-#### 3. Deployment (Streamlit App)
+#### 4. Deployment (Streamlit App)
 
 - **Entry Point**: `app/main.py`
 - **Features**:
@@ -61,15 +71,11 @@ This project implements a complete ETL and machine learning pipeline that:
   - Real-time prediction using `pipeline.predict(input_df)`
   - Output: Formatted prediction of average Medicare payment
 
-- **Live Demo**: [Streamlit App Link](https://kensuke0529-cms-appmain-hm3nti.streamlit.app/)
-
-
-
-
-
+- **Live Demo**: [Streamlit App Link](http://192.168.0.2:8501)
+  
+![Model Architecture](images/streamlit.png)
 
 ## Machine Learning Pipeline
-
 This project uses a supervised regression approach to predict average Medicare payments based on provider and service-level features. The model is trained using `XGBoost` in a `scikit-learn` pipeline, with preprocessing and hyperparameter tuning integrated.
 
 ### Workflow Summary
@@ -84,23 +90,17 @@ This project uses a supervised regression approach to predict average Medicare p
 
 ###  Model **Performance**
 
-| Metric        | Baseline Model | Tuned Model (Optuna) |
-|---------------|----------------|-----------------------|
-| MAE           | 6770.02        | **1891.11**           |
-| MSE           | 106.6M         | **18.3M**             |
-| RMSE          | 10325.13       | **4281.22**           |
-| R² Score      | 0.6846         | **0.9458**            |
-| CV MAE (5-Fold) | 6911.24 ± 594.03 |              |
-
+| Metric              | Linear Regression | Random Forest      | XGBoost (Baseline) | XGBoost (Optuna Tuned) |
+|---------------------|------------------:|-------------------:|-------------------:|------------------------:|
+| **MAE**             | 9,204.15          | 2,068.80           | 6,770.02           | **1,891.11**            |
+| **MSE**             | 300,172,864       | 45,018,925         | 106,600,000        | **18,300,000**          |
+| **RMSE**            | 17,325.50         | 6,709.61           | 10,325.13          | **4,281.22**            |
+| **R² Score**        | 0.097             | 0.865              | 0.6846             | **0.9458**              |
+| **CV MAE (5-Fold)** | —                 | —                  | 6,911.24 ± 594.03  | —                       |
 
 ---
-The Mean Absolute Error (MAE) of the tuned model is 1,891, which corresponds to approximately 13.2% of the median Medicare payment value ($14,266). This indicates that, on average, the model's predictions deviate from typical values by just over 13%, which is well within acceptable bounds for healthcare payment estimation.
+The `Mean Absolute Error (MAE)` of the tuned model is 1,891, which corresponds to approximately 13.2% of the median Medicare payment value ($14,266). This indicates that, on average, the model's predictions deviate from typical values by just over 13%, which is well within acceptable bounds for healthcare payment estimation.
 
-Similarly, the Root Mean Squared Error (RMSE) is 4,281, which is roughly 16% of the standard deviation of the target variable ($26,699). Since RMSE accounts for larger errors more heavily, this relatively low ratio demonstrates that the model not only predicts accurately on average but also controls large outlier errors effectively, despite the wide variance and skewness in the payment data.
+Similarly, the `Root Mean Squared Error (RMSE)`  is 4,281, which is roughly 16% of the standard deviation of the target variable ($26,699). Since RMSE accounts for larger errors more heavily, this relatively low ratio demonstrates that the model not only predicts accurately on average but also controls large outlier errors effectively, despite the wide variance and skewness in the payment data.
 
-
-----
-
-###  Model Saving
-
-The final model is saved as a `.joblib` file for later inference:
+#### Model Saving: The final model is saved as a `.joblib` file for later inference
