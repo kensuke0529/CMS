@@ -15,7 +15,7 @@ This project implements a complete ETL and machine learning pipeline that:
 
 ![Model Architecture](images/Blank_diagram.png)
 
----
+-------
 
 ### Key Components
 
