@@ -9,6 +9,7 @@ This project implements a complete ETL and machine learning pipeline that:
 - Stores the processed data in a `SQL` database
 - Trains an optimized `XGBoost` regression model using a `scikit-learn` 
 - Deploys a web application using `Streamlit` for real-time prediction of average Medicare payments
+- As an alternative, XGBoost regression model can be trained using `AWS Sagemaker` and deployed to the endpoint
 
 **Live Demo**: [Streamlit App Link](http://192.168.0.2:8501)
 
@@ -74,6 +75,15 @@ This process began with `DDL` (Data Definition Language) design to normalize the
 - **Live Demo**: [Streamlit App Link](http://192.168.0.2:8501)
   
 ![Model Architecture](images/streamlit.png)
+
+#### 5. AWS Sagemaker: `sagemaker/sagemaker.ipynb`, `sagemaker_tuning.py`
+
+
+- Reformatted dataset (CSV, no header/index, label in first column) for SageMaker’s XGBoost input requirements.
+- Used boto3 to upload training/validation files to an S3 bucket.
+- Trained XGBoost model using via the sagemaker SDKn
+- Stored train results in S3 for later use
+- Deployed the model as a real-time inference endpoint using SageMaker’s deploy() method.
 
 ## Machine Learning Pipeline
 This project uses a supervised regression approach to predict average Medicare payments based on provider and service-level features. The model is trained using `XGBoost` in a `scikit-learn` pipeline, with preprocessing and hyperparameter tuning integrated.
