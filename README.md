@@ -58,9 +58,8 @@ This process began with `DDL` (Data Definition Language) design to normalize the
 ![Model Architecture](images/Blank_diagram_(3).png)
 ---
 
-#### 4. Deployment (Streamlit App)
+#### 4. Deployment (Streamlit App): `app/main.py`
 
-- **Entry Point**: `app/main.py`
 - **Features**:
   - User form inputs:
     - Provider CCN
@@ -76,7 +75,7 @@ This process began with `DDL` (Data Definition Language) design to normalize the
   
 ![Model Architecture](images/streamlit.png)
 
-#### 5. AWS Sagemaker: `sagemaker/sagemaker.ipynb`, `sagemaker_tuning.py`
+#### 5. AWS Sagemaker: `sagemaker/sagemaker.ipynb`, `sagemaker_tuning.ipynb`
 
 
 - Reformatted dataset (CSV, no header/index, label in first column) for SageMaker’s XGBoost input requirements.
