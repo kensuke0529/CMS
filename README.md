@@ -4,15 +4,14 @@
 
 This project implements a complete ETL and machine learning pipeline that:
 
-- Extracts Medicare inpatient hospital data via the `CMS Data API`
-- Transforms and cleans the data in a structured `ETL` process
-- Stores the processed data in a `SQL` database
-- Trains an optimized `XGBoost` regression model using a `scikit-learn` 
-- Deploys a web application using `Streamlit` for real-time prediction of average Medicare payments
-- As an alternative, XGBoost regression model can be trained using `AWS Sagemaker` and deployed to the endpoint
+- Extracts Medicare inpatient hospital data via the `CMS Data API`  
+- Transforms and cleans the data using a structured ETL process written in `Python`, containerized with `Docker`  
+- Stores the processed data in a `SQL` database  
+- Trains an optimized `XGBoost` regression model using `scikit-learn`, also executed within a `Docker` container  
+- Deploys a web application using `Streamlit` for real-time prediction of average Medicare payments, running in a Dockerized environment  
+- Optionally, the `XGBoost` model can be trained and deployed using `AWS SageMaker`, with inference served via a hosted endpoint 
 
-**Live Demo**: [Streamlit App Link](http://192.168.0.2:8501)
-
+- **Live Demo**: [Streamlit App Link](http://192.168.0.112:8502/)
 ![Model Architecture](images/Blank_diagram.png)
 
 -------
@@ -71,11 +70,16 @@ This process began with `DDL` (Data Definition Language) design to normalize the
   - Real-time prediction using `pipeline.predict(input_df)`
   - Output: Formatted prediction of average Medicare payment
 
-- **Live Demo**: [Streamlit App Link](http://192.168.0.2:8501)
+- **Live Demo**: [Streamlit App Link](http://192.168.0.112:8502/)
   
 ![Model Architecture](images/streamlit.png)
 
-#### 5. AWS Sagemaker: `sagemaker/sagemaker.ipynb`, `sagemaker_tuning.ipynb`
+#### 5. Docker: `Dockerfile`
+- Runs the ETL pipeline: Executes pipeline_wo_aws.py to extract, transform, and load Medicare data
+- Starts the application: Launches the Streamlit web app for real-time prediction
+- [DockerHub](https://hub.docker.com/r/ken1001/cms)
+
+#### 6. AWS Sagemaker: `sagemaker/sagemaker.ipynb`, `sagemaker_tuning.ipynb`
 
 
 - Reformatted dataset (CSV, no header/index, label in first column) for SageMaker’s XGBoost input requirements.
