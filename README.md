@@ -11,7 +11,6 @@ This project implements a complete ETL and machine learning pipeline that:
 - Deploys a web application using `Streamlit` for real-time prediction of average Medicare payments, running in a Dockerized environment  
 - Optionally, the `XGBoost` model can be trained and deployed using `AWS SageMaker`, with inference served via a hosted endpoint 
 
-- **Live Demo**: [Streamlit App Link](http://192.168.0.112:8502/)
 ![Model Architecture](images/Blank_diagram.png)
 
 -------
@@ -70,7 +69,6 @@ This process began with `DDL` (Data Definition Language) design to normalize the
   - Real-time prediction using `pipeline.predict(input_df)`
   - Output: Formatted prediction of average Medicare payment
 
-- **Live Demo**: [Streamlit App Link](http://192.168.0.112:8502/)
   
 ![Model Architecture](images/streamlit.png)
 
